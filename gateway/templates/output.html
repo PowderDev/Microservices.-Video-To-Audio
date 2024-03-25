@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Converter</title>
+    </head>
+
+    <body>
+        <h1 style="text-align: center;">Loading...</h1>
+
+        <script>
+            const $h1 = document.querySelector('h1');
+
+            const interval = setInterval(() => {
+                fetch("/check-status/" + window.location.pathname.split("/").pop())
+                    .then(res => res.text())
+                    .then((output_id) => {
+                        $h1.textContent = "Ready!"
+                        $audio = document.createElement('audio');
+                        $audio.src = `/download/${output_id}`;
+                        $audio.controls = true;
+                        $audio.style.display = 'block';
+                        $audio.style.margin = '0 auto';
+                        $audio.style.marginTop = '30px';
+                        document.body.appendChild($audio);
+                        clearInterval(interval);
+                    })
+                    .catch((e) => {
+                        console.log(e);
+                    });
+            }, 1000)
+        </script>
+    </body>
+
+</html>

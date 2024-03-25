@@ -1,0 +1,39 @@
+<html>
+
+    <head>
+        <title>Converter</title>
+    </head>
+
+    <body>
+        <h1 style="text-align: center;">Choose video</h1>
+
+        <form style="margin: 0 auto; margin-top: 30px;width: fit-content;">
+            <input type="file" name="file" id="file">
+        </form>
+
+        <script>
+            const fileInput = document.getElementById('file');
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                const formData = new FormData();
+                formData.append('file', file);
+
+                fetch('/upload', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        "Authorization": "<token>"
+                    }
+                })
+                    .then(res => res.text())
+                    .then(data => {
+                        window.location.href = `/output/${data}`;
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
+            });
+        </script>
+    </body>
+
+</html>
